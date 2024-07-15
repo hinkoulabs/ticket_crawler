@@ -122,3 +122,5 @@ desktop.ini
 # Temporary files
 *.swp
 *.swo
+
+credentials.js
