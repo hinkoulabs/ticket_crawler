@@ -44,6 +44,10 @@ export default credentials;
 node crawler.js
 ```
 
+2. View screenshot.png:
+
+If crawler processes successfully, you can find file `screenshot.png` in root folder. It contains a screenshot of final page where barcode is located. The script is set to generate screenshot of final page, but it might be modifiend to fetch the barcode and send it to appropriate service.
+
 ## Description
 
 - **credentials.js**: Stores the email and password.
