@@ -1,8 +1,15 @@
 import { waitForElement } from './waits.js'
-import { findElementByText } from './finds.js'
+
+const findElementByTextStr = `
+    function findElementByText(document, tag, text) {
+        const elements = Array.from(document.querySelectorAll(tag));
+        return elements.find(a => a.textContent.trim() === text);
+    }
+`;
 
 export const clickButtonByText = async (page, buttonText) => {
-    await page.evaluate(() => {
+    await page.evaluate((buttonText, findElementByTextStr) => {   
+        eval(findElementByTextStr);     
         const button = findElementByText(document, 'button', buttonText)
         if (button) {
             button.click();
@@ -11,11 +18,12 @@ export const clickButtonByText = async (page, buttonText) => {
 
         console.error(`Button with text "${buttonText}" not found.`);
         return false;
-    });
+    }, buttonText, findElementByTextStr);
 };
 
 export const clickLinkByText = async (page, linkText) => {
-    const linkClicked = await page.evaluate(() => {
+    return await page.evaluate((linkText, findElementByTextStr) => {
+        eval(findElementByTextStr);  
         const link = findElementByText(document, 'a', linkText)
         if (link) {
             link.click();
@@ -24,24 +32,22 @@ export const clickLinkByText = async (page, linkText) => {
 
         console.error(`Link with text "${linkText}" not found.`);
         return false;
-    });
-    return linkClicked;
-};
-
-export const clickElementByTestId = async (page, testId) => {
-    try {
-        await page.click(`[data-testid="${testId}"]`);
-        return true;
-    } catch (error) {
-        console.error(`Element with data-testid "${testId}" not found: ${error}`);
-        return false;
-    }
+    }, linkText, findElementByTextStr);
 };
 
 export const clickButton = async (page, selector) => {
     if (await waitForElement(page, selector)) {
-        await page.click(selector);
-        console.log("clicked", selector)
+        try {
+            await page.evaluate((selector) => {
+                const button = document.querySelector(selector);
+                if (button) {
+                    button.click();
+                }
+            }, selector);
+            console.log("Clicked", selector);
+        } catch (error) {
+            console.error(`Failed to click button ${selector}:`, error);
+        }
     } else {
         console.error(`Button ${selector} not found.`);
     }

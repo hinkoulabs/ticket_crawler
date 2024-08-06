@@ -57,6 +57,7 @@ const launchBrowser = async (proxy) => {
 const SELECTORS = {
     signInBtn: '#signInBtn',
     acceptCookiesBtn: '#onetrust-accept-btn-handler',
+    mainEventTicketsBtn: '[data-testid="main-event-tickets"]',
     login: {
         email: 'input[name="email"]',
         password: 'input[name="password"]',
@@ -100,7 +101,6 @@ const performTask = async (page) => {
     await clickButton(page, SELECTORS.signInBtn)
 
     // pass cookies request
-    await waitForElement(page, SELECTORS.acceptCookiesBtn)
     await clickButton(page, SELECTORS.acceptCookiesBtn)
 
     await randomDelay(1000, 2000);
@@ -119,28 +119,27 @@ const performTask = async (page) => {
 
     await nextOrHandleCaptcha(
         page, 
-        {func: 'queryByText', args: { tag: 'button', value: manageTicketBtnText  }},
+        {func: 'queryByText', args: { tag: 'button', value: manageTicketBtnText }},
         {
             // loadCallback: () => waitForNavigation(page)
         }
     )
 
     // go to tickets
-    await clickButtonByText(manageTicketBtnText);
+    await clickButtonByText(page, manageTicketBtnText);
 
     const viewEventDetailsLinkText = "View Event Details";
 
     await nextOrHandleCaptcha(page, {func: 'queryByText', args: { tag: 'a', value: viewEventDetailsLinkText  }})
 
     // go to even details
-    await clickLinkByText(viewEventDetailsLinkText);
+    await clickLinkByText(page, viewEventDetailsLinkText);
 
     await waitForNavigation(page)
 
-    // view barcode
-    await clickElementByTestId("main-event-tickets")
+    await clickButton(page, SELECTORS.mainEventTicketsBtn)
 
-    await randomDelay(5000);
+    await randomDelay(3000);
 
     await page.screenshot({ path: 'screenshot.png' });
 };

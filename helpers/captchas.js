@@ -65,8 +65,6 @@ export const nextOrHandleCaptcha = async (page, finder, options) => {
             options.loadCallback()
         }
 
-        console.log(elementVisible)
-
         elementVisible = await page.evaluate((finder) => {
             const findElement = (finder) => {
                 if (finder.func === 'querySelector') {
