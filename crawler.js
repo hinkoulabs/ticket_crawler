@@ -47,7 +47,7 @@ const launchBrowser = async (proxy) => {
     }
 
     return puppeteer.launch({
-        headless: false,
+        headless: true,
         executablePath: chromePath,
         args,
         defaultViewport: null

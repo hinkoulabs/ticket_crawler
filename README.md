@@ -57,6 +57,7 @@ If crawler processes successfully, you can find file `screenshot.png` in root fo
 
 - Ensure your credentials are correct in the `credentials.js` file.
 - Adjust the URL and selectors in `crawler.js` as needed for your specific use case.
+- The sciprt is set to open browser to demonstrate all operations. If you need to avoid it, please change `headless` to `false` on line 50 of `crawler.js`
 
 ## License
 
